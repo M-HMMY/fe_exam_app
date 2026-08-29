@@ -8,6 +8,7 @@ import { extMgmt } from './ext-mgmt';
 import { poolBasicAlgo } from './pool-basic-algo';
 import { poolHwSysSw } from './pool-hw-sys-sw';
 import { poolDbNw } from './pool-db-nw';
+import { poolSecDevUi } from './pool-sec-dev-ui';
 import { QUESTIONS_B as baseB } from './subjectB';
 import { QUESTIONS_B2 } from './subjectB2';
 import { QUESTIONS_B3 } from './subjectB3';
@@ -24,6 +25,7 @@ export const QUESTIONS_A: QuestionA[] = [
   ...poolBasicAlgo,
   ...poolHwSysSw,
   ...poolDbNw,
+  ...poolSecDevUi,
 ];
 
 export const QUESTIONS_B: QuestionB[] = [
