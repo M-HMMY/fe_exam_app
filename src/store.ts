@@ -70,6 +70,13 @@ export const actions = {
       at: now,
       mode: params.mode,
     };
+    // 計算ドリルは毎回数値が変わる自動生成問題なので、復習カードは作らない
+    // （同じ問題文が二度と現れないため、間隔反復の対象にならない）
+    if (params.mode === 'drill') {
+      set({ ...state, logs: [...state.logs, log].slice(-5000) });
+      return;
+    }
+
     const card = state.srs[params.qid] ?? newCard(params.qid, params.categoryId, now);
     const grade: Grade = params.grade ?? (params.correct ? 'good' : 'again');
     const updated = review(card, grade, now);

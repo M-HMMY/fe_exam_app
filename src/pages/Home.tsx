@@ -6,6 +6,7 @@ import { navigate } from '../lib/router';
 import { dueCards, upcoming } from '../lib/srs';
 import { readingProgress, recentAccuracy, streakDays, weakCategories } from '../lib/stats';
 import { categoryName } from '../data/categories';
+import { DRILLS } from '../data/drills';
 
 function pct(v: number | null): string {
   return v === null ? '—' : `${Math.round(v * 100)}%`;
@@ -202,6 +203,10 @@ export function Home(): JSX.Element {
             <span className="action-sub">
               全 {QUESTIONS_B.length} 問（設問 {subQuestionCount} 問）／擬似言語とセキュリティ
             </span>
+          </button>
+          <button type="button" className="action" onClick={() => navigate('drill')}>
+            <span className="action-title">計算ドリル</span>
+            <span className="action-sub">{DRILLS.length} 種類／毎回数値が変わる自動生成問題</span>
           </button>
           <button type="button" className="action" onClick={() => navigate('mock')}>
             <span className="action-title">模試を受ける</span>

@@ -75,7 +75,7 @@ export interface AttemptLog {
   /** epoch ms */
   at: number;
   /** 出題モード */
-  mode: 'practice' | 'review' | 'mock' | 'check';
+  mode: 'practice' | 'review' | 'mock' | 'check' | 'drill';
 }
 
 /** SRS（間隔反復）のカード状態。SM-2 を簡略化したもの */

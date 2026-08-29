@@ -11,6 +11,7 @@ import { Mock } from './pages/Mock';
 import { Stats } from './pages/Stats';
 import { Settings } from './pages/Settings';
 import { Tools } from './pages/Tools';
+import { Drill } from './pages/Drill';
 
 const NAV: { page: string; label: string; icon: string }[] = [
   { page: 'home', label: 'ホーム', icon: '⌂' },
@@ -18,6 +19,7 @@ const NAV: { page: string; label: string; icon: string }[] = [
   { page: 'tools', label: '体験ツール', icon: '🧪' },
   { page: 'practice-a', label: '科目A 演習', icon: '✎' },
   { page: 'practice-b', label: '科目B 演習', icon: '⌨' },
+  { page: 'drill', label: '計算ドリル', icon: '🧮' },
   { page: 'review', label: '復習', icon: '↻' },
   { page: 'mock', label: '模試', icon: '⏱' },
   { page: 'stats', label: '成績分析', icon: '📊' },
@@ -30,6 +32,8 @@ function Page({ page }: { page: string }): JSX.Element {
       return <Textbook />;
     case 'tools':
       return <Tools />;
+    case 'drill':
+      return <Drill />;
     case 'practice-a':
       return <PracticeA />;
     case 'practice-b':
