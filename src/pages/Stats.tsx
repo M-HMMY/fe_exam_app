@@ -3,7 +3,15 @@ import { useStore } from '../store';
 import { SECTIONS } from '../data/textbook';
 import { QUESTIONS_A, QUESTIONS_B } from '../data/questions';
 import { navigate } from '../lib/router';
-import { dailyCounts, readingProgress, recentAccuracy, statsByCategory, streakDays } from '../lib/stats';
+import {
+  TARGET_RATE,
+  dailyCounts,
+  readingProgress,
+  recentAccuracy,
+  statsByCategory,
+  streakDays,
+  untouchedByCategory,
+} from '../lib/stats';
 import { FIELDS, categoriesOfField } from '../data/categories';
 
 function pct(v: number | null): string {
@@ -44,6 +52,7 @@ export function Stats(): JSX.Element {
   const streak = streakDays(state.logs);
   const read = readingProgress(state, SECTIONS.length);
   const catStats = statsByCategory(state.logs);
+  const untouched = untouchedByCategory(state.logs, QUESTIONS_A);
   const days = dailyCounts(state.logs, 14);
   const maxCount = Math.max(...days.map((d) => d.count), 1);
   const mocks = [...state.mocks].sort((a, b) => b.at - a.at);
@@ -97,7 +106,9 @@ export function Stats(): JSX.Element {
 
       <section className="section">
         <h2>分野別の正答率</h2>
-        <p className="hint">正答率が 80% 未満の分野は強調表示しています。1 問も解いていない分野は「—」です。</p>
+        <p className="hint">
+          目標の正答率 {Math.round(TARGET_RATE * 100)}% に届いていない分野を強調しています。「未解答」はまだ一度も解いていない問題数で、ここが残っているうちは正答率が安定しません。
+        </p>
         {FIELDS.map((field) => (
           <div key={field.id}>
             <h3>{field.name}</h3>
@@ -107,6 +118,7 @@ export function Stats(): JSX.Element {
                   <tr>
                     <th>分野</th>
                     <th>解答数</th>
+                    <th>未解答</th>
                     <th>正答率</th>
                     <th>達成度</th>
                     <th />
@@ -116,11 +128,12 @@ export function Stats(): JSX.Element {
                   {categoriesOfField(field.id).map((c) => {
                     const s = catStats.find((x) => x.categoryId === c.id);
                     const rate = s?.rate ?? null;
-                    const low = rate !== null && rate < 0.8;
+                    const low = rate !== null && rate < TARGET_RATE;
                     return (
                       <tr key={c.id} className={low ? 'low' : undefined}>
                         <td>{c.name}</td>
                         <td>{s?.total ?? 0} 問</td>
+                        <td>{untouched.get(c.id) ?? 0} 問</td>
                         <td>{pct(rate)}</td>
                         <td>
                           {rate === null ? (

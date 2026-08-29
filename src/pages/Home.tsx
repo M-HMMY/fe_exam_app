@@ -222,7 +222,7 @@ export function Home(): JSX.Element {
       {weak.length > 0 && (
         <section className="section">
           <h2>弱点分野</h2>
-          <p className="hint">正答率が 80% を下回っている分野です。教本に戻ってから演習すると効果的です。</p>
+          <p className="hint">目標の正答率 90% に届いていない分野です。教本に戻ってから演習すると効果的です。</p>
           <ul className="weak-list">
             {weak.map((w) => (
               <li key={w.categoryId}>

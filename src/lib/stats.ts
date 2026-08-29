@@ -33,9 +33,12 @@ export function recentAccuracy(logs: AttemptLog[], n = 50): { total: number; cor
 }
 
 /** 解答数が閾値以上で正答率が低い分野を弱点として返す */
+/** 目標とする正答率。これを下回る分野を弱点として扱う */
+export const TARGET_RATE = 0.9;
+
 export function weakCategories(logs: AttemptLog[], minAnswers = 3, limit = 3): CategoryStat[] {
   return statsByCategory(logs)
-    .filter((s) => s.total >= minAnswers && s.rate !== null && s.rate < 0.8)
+    .filter((s) => s.total >= minAnswers && s.rate !== null && s.rate < TARGET_RATE)
     .sort((a, b) => (a.rate! - b.rate!) || b.total - a.total)
     .slice(0, limit);
 }
@@ -81,4 +84,15 @@ export function streakDays(logs: AttemptLog[], now = Date.now()): number {
 export function readingProgress(state: AppState, totalSections: number): number {
   if (totalSections === 0) return 0;
   return state.readSections.length / totalSections;
+}
+
+/** 分野ごとの「まだ一度も解いていない問題」の数 */
+export function untouchedByCategory(logs: AttemptLog[], questions: { id: string; categoryId: string }[]): Map<string, number> {
+  const answered = new Set(logs.map((l) => l.qid));
+  const map = new Map<string, number>();
+  for (const q of questions) {
+    if (answered.has(q.id)) continue;
+    map.set(q.categoryId, (map.get(q.categoryId) ?? 0) + 1);
+  }
+  return map;
 }
