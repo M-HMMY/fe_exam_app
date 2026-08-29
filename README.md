@@ -4,9 +4,26 @@
 
 ## 起動
 
+デスクトップの **「FE 学習アプリ」** ショートカットをダブルクリックすると、必要なら自動でビルドし直したうえでローカルサーバを起動し、ブラウザで開きます。表示される黒いウィンドウを閉じるとアプリが停止します。
+
+ショートカットの実体は [scripts/launch.ps1](scripts/launch.ps1) です。作り直したい場合は次を実行します。
+
+```powershell
+$ws = New-Object -ComObject WScript.Shell
+$lnk = $ws.CreateShortcut((Join-Path ([Environment]::GetFolderPath('Desktop')) 'FE 学習アプリ.lnk'))
+$lnk.TargetPath = "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe"
+$lnk.Arguments = '-ExecutionPolicy Bypass -NoProfile -File "C:\Dev\fe_exam_app\scripts\launch.ps1"'
+$lnk.WorkingDirectory = 'C:\Dev\fe_exam_app'
+$lnk.IconLocation = 'C:\Dev\fe_exam_app\scripts\app.ico,0'
+$lnk.Save()
+```
+
+コマンドから起動する場合は次のとおりです。
+
 ```
 npm install     # 初回のみ
-npm run dev     # http://localhost:5173 が開く
+npm run dev     # http://localhost:5173 が開く（開発用・自動リロードあり）
+npm run preview # http://localhost:4173 でビルド済みのものを配信
 ```
 
 同じ Wi-Fi 上のスマートフォンからも、ターミナルに表示される `Network:` の URL で開けます。
