@@ -1,0 +1,223 @@
+import type { JSX } from 'react';
+import { useStore } from '../store';
+import { SECTIONS } from '../data/textbook';
+import { QUESTIONS_A, QUESTIONS_B } from '../data/questions';
+import { navigate } from '../lib/router';
+import { dailyCounts, readingProgress, recentAccuracy, statsByCategory, streakDays } from '../lib/stats';
+import { FIELDS, categoriesOfField } from '../data/categories';
+
+function pct(v: number | null): string {
+  return v === null ? '—' : `${Math.round(v * 100)}%`;
+}
+
+/** 秒を「n分n秒」に整形する */
+function duration(seconds: number): string {
+  const s = Math.max(0, Math.round(seconds));
+  return `${Math.floor(s / 60)}分${String(s % 60).padStart(2, '0')}秒`;
+}
+
+function dateTime(at: number): string {
+  const d = new Date(at);
+  const p = (n: number): string => String(n).padStart(2, '0');
+  return `${d.getFullYear()}/${p(d.getMonth() + 1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+
+/** SRS の qid から問題の表示名を得る。`#` を含むものは科目B の設問 */
+function questionLabel(qid: string): string {
+  const hash = qid.indexOf('#');
+  if (hash < 0) {
+    return QUESTIONS_A.find((q) => q.id === qid)?.question ?? qid;
+  }
+  const baseId = qid.slice(0, hash);
+  // 保存されている添字は 0 始まりなので、表示は 1 始まりに直す
+  const sub = Number(qid.slice(hash + 1)) + 1;
+  const b = QUESTIONS_B.find((q) => q.id === baseId);
+  return b ? `${b.title}（設問${sub}）` : qid;
+}
+
+export function Stats(): JSX.Element {
+  const state = useStore();
+  const total = state.logs.length;
+  const correct = state.logs.filter((l) => l.correct).length;
+  const overall = total ? correct / total : null;
+  const recent = recentAccuracy(state.logs, 50);
+  const streak = streakDays(state.logs);
+  const read = readingProgress(state, SECTIONS.length);
+  const catStats = statsByCategory(state.logs);
+  const days = dailyCounts(state.logs, 14);
+  const maxCount = Math.max(...days.map((d) => d.count), 1);
+  const mocks = [...state.mocks].sort((a, b) => b.at - a.at);
+  const lapsed = Object.values(state.srs)
+    .filter((c) => c.lapses >= 1)
+    .sort((a, b) => b.lapses - a.lapses)
+    .slice(0, 10);
+
+  return (
+    <div className="page">
+      <header className="page-head">
+        <h1>成績</h1>
+        <p className="lead">
+          これまでの解答をもとに、分野別の正答率・学習の継続状況・模試の結果をまとめています。弱い分野から手を付けるのが近道です。
+        </p>
+      </header>
+
+      <section className="cards">
+        <div className="card stat">
+          <span className="stat-label">総解答数</span>
+          <span className="stat-value">{total}</span>
+          <span className="stat-sub">問</span>
+        </div>
+        <div className="card stat">
+          <span className="stat-label">全体の正答率</span>
+          <span className="stat-value">{pct(overall)}</span>
+          <span className="stat-sub">
+            {correct} / {total} 問正解
+          </span>
+        </div>
+        <div className="card stat">
+          <span className="stat-label">直近 50 問の正答率</span>
+          <span className="stat-value">{pct(recent.rate)}</span>
+          <span className="stat-sub">
+            {recent.correct} / {recent.total} 問正解
+          </span>
+        </div>
+        <div className="card stat">
+          <span className="stat-label">連続学習</span>
+          <span className="stat-value">{streak}</span>
+          <span className="stat-sub">日</span>
+        </div>
+        <div className="card stat">
+          <span className="stat-label">教本の読了</span>
+          <span className="stat-value">{Math.round(read * 100)}%</span>
+          <span className="stat-sub">
+            {state.readSections.length} / {SECTIONS.length} セクション
+          </span>
+        </div>
+      </section>
+
+      <section className="section">
+        <h2>分野別の正答率</h2>
+        <p className="hint">正答率が 80% 未満の分野は強調表示しています。1 問も解いていない分野は「—」です。</p>
+        {FIELDS.map((field) => (
+          <div key={field.id}>
+            <h3>{field.name}</h3>
+            <div className="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>分野</th>
+                    <th>解答数</th>
+                    <th>正答率</th>
+                    <th>達成度</th>
+                    <th />
+                  </tr>
+                </thead>
+                <tbody>
+                  {categoriesOfField(field.id).map((c) => {
+                    const s = catStats.find((x) => x.categoryId === c.id);
+                    const rate = s?.rate ?? null;
+                    const low = rate !== null && rate < 0.8;
+                    return (
+                      <tr key={c.id} className={low ? 'low' : undefined}>
+                        <td>{c.name}</td>
+                        <td>{s?.total ?? 0} 問</td>
+                        <td>{pct(rate)}</td>
+                        <td>
+                          {rate === null ? (
+                            '—'
+                          ) : (
+                            <div className="hbar">
+                              <div className="hbar-fill" style={{ width: `${rate * 100}%` }} />
+                            </div>
+                          )}
+                        </td>
+                        <td>
+                          <button type="button" className="link-btn" onClick={() => navigate(`practice-a?cat=${c.id}`)}>
+                            演習する
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      <section className="section">
+        <h2>学習履歴（直近 14 日）</h2>
+        <div className="bar-chart">
+          {days.map((d) => (
+            <div key={d.label} className="bar-col">
+              <div className="bar" style={{ height: `${(d.count / maxCount) * 100}%` }} title={`${d.count} 問`} />
+              <span className="bar-value">{d.count}</span>
+              <span className="bar-label">{d.label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="section">
+        <h2>模試の履歴</h2>
+        {mocks.length === 0 ? (
+          <p className="hint">まだ模試の記録がありません。</p>
+        ) : (
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>日時</th>
+                  <th>科目</th>
+                  <th>得点</th>
+                  <th>正答率</th>
+                  <th>所要時間</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mocks.map((m) => (
+                  <tr key={m.id}>
+                    <td>{dateTime(m.at)}</td>
+                    <td>科目{m.subject}</td>
+                    <td>
+                      {m.correct} / {m.total}
+                    </td>
+                    <td>{pct(m.total ? m.correct / m.total : null)}</td>
+                    <td>{duration(m.elapsed)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+
+      <section className="section">
+        <h2>間違えやすい問題</h2>
+        {lapsed.length === 0 ? (
+          <p className="hint">誤答が記録された問題はまだありません。</p>
+        ) : (
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>問題</th>
+                  <th>誤答回数</th>
+                </tr>
+              </thead>
+              <tbody>
+                {lapsed.map((c) => (
+                  <tr key={c.qid}>
+                    <td>{questionLabel(c.qid)}</td>
+                    <td>{c.lapses} 回</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}

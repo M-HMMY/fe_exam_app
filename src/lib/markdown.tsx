@@ -1,0 +1,214 @@
+import type { JSX, ReactNode } from 'react';
+import { Diagram } from '../components/Diagram';
+import { Widget } from '../components/Widget';
+
+/**
+ * 教本本文用の軽量 Markdown レンダラ。
+ * 依存を増やさずに済ませるため、必要な記法だけを実装している。
+ *   見出し(#/##/###) / 箇条書き(- , 1.) / 表 / コードブロック(```) /
+ *   引用(> ) / **強調** / `コード` / 水平線(---)
+ */
+
+/** インライン記法（**強調** と `コード`）を処理する */
+function inline(text: string, keyPrefix: string): ReactNode[] {
+  const nodes: ReactNode[] = [];
+  const re = /(\*\*[^*]+\*\*|`[^`]+`)/g;
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let i = 0;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) nodes.push(text.slice(last, m.index));
+    const token = m[0];
+    if (token.startsWith('**')) {
+      nodes.push(<strong key={`${keyPrefix}-b${i}`}>{token.slice(2, -2)}</strong>);
+    } else {
+      nodes.push(<code key={`${keyPrefix}-c${i}`}>{token.slice(1, -1)}</code>);
+    }
+    last = m.index + token.length;
+    i++;
+  }
+  if (last < text.length) nodes.push(text.slice(last));
+  return nodes;
+}
+
+function isTableSeparator(line: string): boolean {
+  return /^\|?[\s:-]*-[\s|:-]*$/.test(line) && line.includes('-');
+}
+
+function splitRow(line: string): string[] {
+  return line
+    .replace(/^\||\|$/g, '')
+    .split('|')
+    .map((c) => c.trim());
+}
+
+export function Markdown({ source }: { source: string }): JSX.Element {
+  const lines = source.replace(/\r\n/g, '\n').split('\n');
+  const out: ReactNode[] = [];
+  let i = 0;
+  let key = 0;
+  const k = () => `md-${key++}`;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // 空行
+    if (line.trim() === '') {
+      i++;
+      continue;
+    }
+
+    // コードブロック
+    if (line.startsWith('```')) {
+      const lang = line.slice(3).trim();
+      const buf: string[] = [];
+      i++;
+      while (i < lines.length && !lines[i].startsWith('```')) {
+        buf.push(lines[i]);
+        i++;
+      }
+      i++; // 閉じる ```
+      // ```diagram:flow → 図、```widget:radix → 対話ウィジェット
+      if (lang.startsWith('diagram:')) {
+        out.push(<Diagram key={k()} type={lang.slice('diagram:'.length)} source={buf.join('\n')} />);
+        continue;
+      }
+      if (lang.startsWith('widget:')) {
+        out.push(<Widget key={k()} id={lang.slice('widget:'.length)} />);
+        continue;
+      }
+      out.push(
+        <pre key={k()} className={`code-block${lang ? ` lang-${lang}` : ''}`}>
+          <code>{buf.join('\n')}</code>
+        </pre>,
+      );
+      continue;
+    }
+
+    // 水平線
+    if (/^---+$/.test(line.trim())) {
+      out.push(<hr key={k()} />);
+      i++;
+      continue;
+    }
+
+    // 見出し
+    const h = /^(#{1,4})\s+(.*)$/.exec(line);
+    if (h) {
+      const level = h[1].length;
+      const content = inline(h[2], k());
+      if (level === 1) out.push(<h2 key={k()}>{content}</h2>);
+      else if (level === 2) out.push(<h3 key={k()}>{content}</h3>);
+      else out.push(<h4 key={k()}>{content}</h4>);
+      i++;
+      continue;
+    }
+
+    // 表
+    if (line.trim().startsWith('|') && i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
+      const header = splitRow(line);
+      i += 2;
+      const rows: string[][] = [];
+      while (i < lines.length && lines[i].trim().startsWith('|')) {
+        rows.push(splitRow(lines[i]));
+        i++;
+      }
+      out.push(
+        <div key={k()} className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                {header.map((c, ci) => (
+                  <th key={ci}>{inline(c, `${k()}-th${ci}`)}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r, ri) => (
+                <tr key={ri}>
+                  {r.map((c, ci) => (
+                    <td key={ci}>{inline(c, `${k()}-td${ri}-${ci}`)}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>,
+      );
+      continue;
+    }
+
+    // 引用（＝ポイント枠として使う）
+    if (line.startsWith('> ')) {
+      const buf: string[] = [];
+      while (i < lines.length && lines[i].startsWith('> ')) {
+        buf.push(lines[i].slice(2));
+        i++;
+      }
+      out.push(
+        <blockquote key={k()}>
+          {buf.map((b, bi) => (
+            <p key={bi}>{inline(b, `${k()}-q${bi}`)}</p>
+          ))}
+        </blockquote>,
+      );
+      continue;
+    }
+
+    // 箇条書き（- / 1.）。2 スペースで 1 段のネストに対応
+    if (/^\s*(-|\d+\.)\s+/.test(line)) {
+      const ordered = /^\s*\d+\.\s+/.test(line);
+      const items: { depth: number; text: string }[] = [];
+      while (i < lines.length && /^\s*(-|\d+\.)\s+/.test(lines[i])) {
+        const indent = /^\s*/.exec(lines[i])![0].length;
+        items.push({ depth: indent >= 2 ? 1 : 0, text: lines[i].replace(/^\s*(-|\d+\.)\s+/, '') });
+        i++;
+      }
+      const render = (from: number): ReactNode[] => {
+        const nodes: ReactNode[] = [];
+        let j = from;
+        while (j < items.length) {
+          if (items[j].depth === 1) {
+            const sub: string[] = [];
+            while (j < items.length && items[j].depth === 1) {
+              sub.push(items[j].text);
+              j++;
+            }
+            nodes.push(
+              <ul key={k()} className="nested">
+                {sub.map((s, si) => (
+                  <li key={si}>{inline(s, `${k()}-s${si}`)}</li>
+                ))}
+              </ul>,
+            );
+          } else {
+            nodes.push(<li key={k()}>{inline(items[j].text, k())}</li>);
+            j++;
+          }
+        }
+        return nodes;
+      };
+      const children = render(0);
+      out.push(ordered ? <ol key={k()}>{children}</ol> : <ul key={k()}>{children}</ul>);
+      continue;
+    }
+
+    // 段落（連続する通常行をまとめる）
+    const buf: string[] = [];
+    while (
+      i < lines.length &&
+      lines[i].trim() !== '' &&
+      !lines[i].startsWith('```') &&
+      !lines[i].startsWith('> ') &&
+      !/^(#{1,4})\s+/.test(lines[i]) &&
+      !/^\s*(-|\d+\.)\s+/.test(lines[i]) &&
+      !lines[i].trim().startsWith('|')
+    ) {
+      buf.push(lines[i]);
+      i++;
+    }
+    out.push(<p key={k()}>{inline(buf.join(' '), k())}</p>);
+  }
+
+  return <div className="md">{out}</div>;
+}

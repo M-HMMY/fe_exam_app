@@ -1,0 +1,94 @@
+import { useSyncExternalStore } from 'react';
+import type { AppState, AttemptLog, MockResult } from './types';
+import { emptyState, loadState, saveState } from './lib/storage';
+import { newCard, review, type Grade } from './lib/srs';
+
+let state: AppState = loadState();
+const listeners = new Set<() => void>();
+
+function set(next: AppState): void {
+  state = next;
+  saveState(state);
+  listeners.forEach((l) => l());
+}
+
+function subscribe(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+const getSnapshot = (): AppState => state;
+
+/** アプリのどこからでも最新の学習状態を購読する */
+export function useStore(): AppState {
+  return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+}
+
+export const actions = {
+  markRead(sectionId: string, read: boolean): void {
+    const current = new Set(state.readSections);
+    const readAt = { ...(state.readAt ?? {}) };
+    if (read) {
+      current.add(sectionId);
+      readAt[sectionId] = Date.now();
+    } else {
+      current.delete(sectionId);
+      delete readAt[sectionId];
+    }
+    set({ ...state, readSections: [...current], readAt });
+  },
+
+  setBookmark(sectionId: string): void {
+    if (state.bookmark === sectionId) return;
+    set({ ...state, bookmark: sectionId });
+  },
+
+  setExamDate(date: string | undefined): void {
+    set({ ...state, examDate: date });
+  },
+
+  setTheme(theme: NonNullable<AppState['theme']>): void {
+    set({ ...state, theme });
+  },
+
+  /**
+   * 解答を記録する。SRS カードも同時に更新し、
+   * grade を省略した場合は正誤から自動で決める。
+   */
+  answer(params: {
+    qid: string;
+    categoryId: string;
+    correct: boolean;
+    mode: AttemptLog['mode'];
+    grade?: Grade;
+  }): void {
+    const now = Date.now();
+    const log: AttemptLog = {
+      qid: params.qid,
+      categoryId: params.categoryId,
+      correct: params.correct,
+      at: now,
+      mode: params.mode,
+    };
+    const card = state.srs[params.qid] ?? newCard(params.qid, params.categoryId, now);
+    const grade: Grade = params.grade ?? (params.correct ? 'good' : 'again');
+    const updated = review(card, grade, now);
+    set({
+      ...state,
+      logs: [...state.logs, log].slice(-5000),
+      srs: { ...state.srs, [params.qid]: updated },
+    });
+  },
+
+  addMock(result: MockResult): void {
+    set({ ...state, mocks: [...state.mocks, result] });
+  },
+
+  replace(next: AppState): void {
+    set(next);
+  },
+
+  resetAll(): void {
+    set({ ...emptyState });
+  },
+};
