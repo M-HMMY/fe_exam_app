@@ -1,7 +1,7 @@
 /** アプリ全体で使う型定義 */
 
 /** 試験の大分類 */
-export type FieldId = 'technology' | 'management' | 'strategy';
+export type FieldId = 'intro' | 'technology' | 'management' | 'strategy';
 
 /** 中分類（シラバスの「分野」相当）。教本の章と問題のタグを兼ねる */
 export interface Category {

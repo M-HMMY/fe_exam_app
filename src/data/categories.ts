@@ -1,12 +1,16 @@
 import type { Category, FieldId } from '../types';
 
 export const FIELDS: { id: FieldId; name: string; note: string }[] = [
+  { id: 'intro', name: '入門編', note: 'IT の知識がない状態から読み始める人へ。試験の形と前提用語をここで押さえる' },
   { id: 'technology', name: 'テクノロジ系', note: '科目Aの出題の約 6 割。範囲が広く、計算問題もここから出る' },
   { id: 'management', name: 'マネジメント系', note: '出題数は少ないが用語中心で得点しやすい' },
   { id: 'strategy', name: 'ストラテジ系', note: '経営・法務。暗記で確実に稼げる分野' },
 ];
 
 export const CATEGORIES: Category[] = [
+  // --- 入門編（前提知識。確認問題は持たない） ---
+  { id: 'intro', field: 'intro', name: 'はじめに', summary: '試験の形式・コンピュータの全体像・学習の進め方・用語ミニ辞典' },
+
   // --- テクノロジ系 ---
   { id: 't-basic', field: 'technology', name: '基礎理論', summary: '基数変換・論理演算・確率統計・情報理論' },
   { id: 't-algo', field: 'technology', name: 'アルゴリズムとプログラミング', summary: 'データ構造・探索・整列・計算量・擬似言語' },

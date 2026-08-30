@@ -109,7 +109,9 @@ export function Stats(): JSX.Element {
         <p className="hint">
           目標の正答率 {Math.round(TARGET_RATE * 100)}% に届いていない分野を強調しています。「未解答」はまだ一度も解いていない問題数で、ここが残っているうちは正答率が安定しません。
         </p>
-        {FIELDS.map((field) => (
+        {FIELDS.filter((field) =>
+          categoriesOfField(field.id).some((c) => QUESTIONS_A.some((q) => q.categoryId === c.id)),
+        ).map((field) => (
           <div key={field.id}>
             <h3>{field.name}</h3>
             <div className="table-wrap">

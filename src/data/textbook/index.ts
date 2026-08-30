@@ -1,4 +1,5 @@
 import type { TextbookSection } from '../../types';
+import { intro } from './intro';
 import { tBasic } from './t-basic';
 import { tAlgo } from './t-algo';
 import { tHw } from './t-hw';
@@ -14,6 +15,7 @@ import { strategy } from './strategy';
 
 /** 教本の全セクション。CATEGORIES の並び順に対応させている */
 export const SECTIONS: TextbookSection[] = [
+  ...intro,
   ...tBasic,
   ...tAlgo,
   ...tHw,

@@ -70,8 +70,8 @@ function Toc(): JSX.Element {
       <header className="page-head">
         <h1>教本</h1>
         <p className="lead">
-          シラバスの分野順に全 {SECTIONS.length} セクション（目安 {Math.round(totalMinutes / 60)}{' '}
-          時間）。上から順に読み進めれば、試験範囲を一通り体系的にカバーできます。
+          全 {SECTIONS.length} セクション（目安 {Math.round(totalMinutes / 60)}{' '}
+          時間）。冒頭の「入門編」で試験の形と前提用語をそろえてから、シラバスの分野順に読み進める構成です。上から順に読めば試験範囲を一通りカバーできます。
         </p>
       </header>
 
@@ -91,6 +91,13 @@ function Toc(): JSX.Element {
       </div>
 
       {searching && <SearchResults query={query} />}
+
+      {!searching && state.readSections.length === 0 && (
+        <button type="button" className="resume" onClick={() => navigate('textbook/i-1')}>
+          <span className="resume-label">はじめての方はここから</span>
+          <span className="resume-title">入門編：この試験はどんな試験か</span>
+        </button>
+      )}
 
       {!searching && state.bookmark && sectionById(state.bookmark) && (
         <button type="button" className="resume" onClick={() => navigate(`textbook/${state.bookmark}`)}>
