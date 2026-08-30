@@ -5,6 +5,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-21',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 2,
     title: '挿入ソート',
     description:
@@ -41,6 +42,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-22',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 1,
     title: '2 つの配列の内積',
     description:
@@ -72,6 +74,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-23',
     kind: 'algorithm',
+    sectionId: 't-algo-6',
     level: 1,
     title: '特定の文字を取り除いた配列を作る',
     description:
@@ -105,6 +108,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-24',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 3,
     title: '10 進数から 2 進数文字列への変換',
     description:
@@ -150,6 +154,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-25',
     kind: 'algorithm',
+    sectionId: 't-algo-6',
     level: 2,
     title: '最頻値を求める',
     description:
@@ -191,6 +196,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-26',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 2,
     title: 'キューによる印刷ジョブの待ち時間',
     description:
@@ -228,6 +234,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-27',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 3,
     title: '連結リストからの要素削除',
     description:
@@ -270,6 +277,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-28',
     kind: 'algorithm',
+    sectionId: 't-algo-5',
     level: 2,
     title: '再帰による配列の総和（分割統治）',
     description:
@@ -304,6 +312,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-29',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 2,
     title: 'シーザー暗号',
     description:
@@ -337,6 +346,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-30',
     kind: 'algorithm',
+    sectionId: 't-algo-6',
     level: 1,
     title: '昇順配列から重複を取り除く',
     description:
@@ -371,6 +381,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-31',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 1,
     title: '括弧の入れ子の深さの最大値',
     description:
@@ -409,6 +420,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-32',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 3,
     title: '2 分探索木への挿入',
     description:
@@ -463,6 +475,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-33',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 2,
     title: 'バブルソートの改良（早期打ち切り）',
     description:
@@ -513,6 +526,7 @@ export const QUESTIONS_B3: QuestionB[] = [
   {
     id: 'b-algo-34',
     kind: 'algorithm',
+    sectionId: 't-algo-6',
     level: 2,
     title: '1 次元配列で表現した表の行ごとの集計',
     description:

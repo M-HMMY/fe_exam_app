@@ -5,6 +5,7 @@ export const QUESTIONS_B2: QuestionB[] = [
   {
     id: 'b-algo-11',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 2,
     title: '選択ソート',
     description:
@@ -43,6 +44,7 @@ export const QUESTIONS_B2: QuestionB[] = [
   {
     id: 'b-algo-12',
     kind: 'algorithm',
+    sectionId: 't-algo-6',
     level: 2,
     title: '配列の並びを逆順にする',
     description:
@@ -75,6 +77,7 @@ export const QUESTIONS_B2: QuestionB[] = [
   {
     id: 'b-algo-13',
     kind: 'algorithm',
+    sectionId: 't-algo-4',
     level: 2,
     title: 'ユークリッドの互除法',
     description:
@@ -107,6 +110,7 @@ export const QUESTIONS_B2: QuestionB[] = [
   {
     id: 'b-algo-14',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 2,
     title: '重複の判定と計算量',
     description:
@@ -141,6 +145,7 @@ export const QUESTIONS_B2: QuestionB[] = [
   {
     id: 'b-algo-15',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 3,
     title: '逆ポーランド記法の計算',
     description:
@@ -179,6 +184,7 @@ export const QUESTIONS_B2: QuestionB[] = [
   {
     id: 'b-algo-16',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 3,
     title: '再帰による 2 分探索',
     description:
@@ -218,6 +224,7 @@ export const QUESTIONS_B2: QuestionB[] = [
   {
     id: 'b-sec-05',
     kind: 'security',
+    sectionId: 't-sec-3',
     level: 2,
     title: 'ファイアウォールの通信制御',
     description:
@@ -258,6 +265,7 @@ export const QUESTIONS_B2: QuestionB[] = [
   {
     id: 'b-sec-06',
     kind: 'security',
+    sectionId: 't-sec-3',
     level: 2,
     title: '委託先へのデータ受渡し',
     description:
@@ -292,6 +300,7 @@ export const QUESTIONS_B2: QuestionB[] = [
   {
     id: 'b-sec-07',
     kind: 'security',
+    sectionId: 't-sec-5',
     level: 2,
     title: 'インシデント発生時の初動',
     description:

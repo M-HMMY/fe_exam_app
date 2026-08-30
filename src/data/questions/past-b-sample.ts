@@ -9,6 +9,7 @@ export const pastBSample: QuestionB[] = [
   {
     id: 'b-ipa-smp-01',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 1,
     title: '変数の値の入れ替え',
     description:
@@ -34,6 +35,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-02',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 2,
     title: 'FizzBuzz の条件分岐の順序',
     description:
@@ -70,6 +72,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-03',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 2,
     title: '累積和配列の生成',
     description:
@@ -99,6 +102,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-04',
     kind: 'algorithm',
+    sectionId: 't-algo-4',
     level: 2,
     title: '減算に基づく最大公約数の算出',
     description:
@@ -133,6 +137,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-05',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 1,
     title: '2 乗和の平方根の計算',
     description:
@@ -161,6 +166,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-06',
     kind: 'algorithm',
+    sectionId: 't-basic-2',
     level: 3,
     title: '8 ビットのビット順反転',
     description:
@@ -192,6 +198,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-07',
     kind: 'algorithm',
+    sectionId: 't-algo-5',
     level: 1,
     title: '階乗を求める再帰関数',
     description:
@@ -215,6 +222,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-08',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 2,
     title: '優先度付きキューの出力順序',
     description:
@@ -252,6 +260,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-09',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 2,
     title: '2 分木の走査順序',
     description:
@@ -291,6 +300,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-10',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 2,
     title: '単方向リストからの要素削除',
     description:
@@ -323,6 +333,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-11',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 2,
     title: '配列を用いた振分け整列',
     description:
@@ -349,6 +360,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-12',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 2,
     title: '配列の類似度を求める',
     description:
@@ -380,6 +392,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-13',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 2,
     title: '二分探索の不具合',
     description:
@@ -418,6 +431,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-14',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 3,
     title: '分位点を求める',
     description:
@@ -459,6 +473,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-16',
     kind: 'algorithm',
+    sectionId: 't-basic-2',
     level: 3,
     title: 'Unicode から UTF-8 への符号化',
     description:
@@ -488,6 +503,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-17',
     kind: 'security',
+    sectionId: 't-sec-3',
     level: 2,
     title: '委託関係における脆弱性対策の責任分担',
     description:
@@ -519,6 +535,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-18',
     kind: 'security',
+    sectionId: 't-sec-4',
     level: 2,
     title: '個人所有 PC の BYOD と VPN 接続のリスク',
     description:
@@ -551,6 +568,7 @@ yの値 と zの値 をこの順にコンマ区切りで出力する`,
   {
     id: 'b-ipa-smp-20',
     kind: 'security',
+    sectionId: 't-sec-3',
     level: 2,
     title: 'ファイアウォール運用の職務分離',
     description:

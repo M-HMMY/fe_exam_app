@@ -5,6 +5,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-algo-01',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 1,
     title: '配列の平均値を求める',
     description:
@@ -35,6 +36,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-algo-02',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 1,
     title: '線形探索',
     description:
@@ -67,6 +69,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-algo-03',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 2,
     title: '最大値の位置を求める',
     description:
@@ -100,6 +103,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-algo-04',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 2,
     title: 'バブルソートのトレース',
     description:
@@ -138,6 +142,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-algo-05',
     kind: 'algorithm',
+    sectionId: 't-algo-6',
     level: 2,
     title: '回文の判定',
     description:
@@ -178,6 +183,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-algo-06',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 2,
     title: 'スタックによる括弧の対応チェック',
     description:
@@ -216,6 +222,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-algo-07',
     kind: 'algorithm',
+    sectionId: 't-algo-5',
     level: 3,
     title: '再帰関数の追跡',
     description:
@@ -244,6 +251,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-algo-08',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 3,
     title: '連結リストへの要素挿入',
     description:
@@ -280,6 +288,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-algo-09',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 2,
     title: '2 つの整列済み配列の併合',
     description:
@@ -325,6 +334,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-algo-10',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 2,
     title: '条件を満たす要素の集計',
     description:
@@ -370,6 +380,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-sec-01',
     kind: 'security',
+    sectionId: 't-sec-1',
     level: 2,
     title: '標的型攻撃メールへの対応',
     description:
@@ -407,6 +418,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-sec-02',
     kind: 'security',
+    sectionId: 't-sec-1',
     level: 2,
     title: 'Web アプリケーションの脆弱性対策',
     description:
@@ -445,6 +457,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-sec-03',
     kind: 'security',
+    sectionId: 't-sec-3',
     level: 2,
     title: 'ファイルサーバのアクセス権設定',
     description:
@@ -479,6 +492,7 @@ export const QUESTIONS_B: QuestionB[] = [
   {
     id: 'b-sec-04',
     kind: 'security',
+    sectionId: 't-sec-3',
     level: 2,
     title: '退職者アカウントの管理',
     description:

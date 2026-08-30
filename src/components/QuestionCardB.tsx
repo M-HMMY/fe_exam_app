@@ -2,6 +2,8 @@ import type { JSX, ReactNode } from 'react';
 import type { QuestionB } from '../types';
 import { ChoiceList, CHOICE_LABELS } from './ChoiceList';
 import { Markdown } from '../lib/markdown';
+import { sectionById } from '../data/textbook';
+import { navigate } from '../lib/router';
 
 interface Props {
   q: QuestionB;
@@ -43,6 +45,7 @@ export function QuestionCardB({
 }: Props): JSX.Element {
   const sub = q.subQuestions[subIndex];
   const isCorrect = selected === sub.answer;
+  const section = q.sectionId ? sectionById(q.sectionId) : undefined;
 
   return (
     <article className="qcard">
@@ -94,6 +97,11 @@ export function QuestionCardB({
           <div className="explanation">
             <Markdown source={sub.explanation} />
           </div>
+          {section && (
+            <button type="button" className="link-btn" onClick={() => navigate(`textbook/${section.id}`)}>
+              教本で復習する：{section.title}
+            </button>
+          )}
         </div>
       )}
 

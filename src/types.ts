@@ -61,6 +61,8 @@ export interface QuestionB {
   id: string;
   /** 出題分野。本試験は 20 問中 16 問が algorithm、4 問が security */
   kind: 'algorithm' | 'security';
+  /** 関連する教本セクション（教本からの演習導線と、解説からの復習導線に使う） */
+  sectionId?: string;
   title: string;
   /** 問題文（Markdown） */
   description: string;

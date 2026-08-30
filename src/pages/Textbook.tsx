@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState, type JSX } from 'react';
 import { useStore, actions } from '../store';
 import { SECTIONS, sectionById, sectionsOfCategory, totalMinutes } from '../data/textbook';
 import { CATEGORIES, FIELDS, categoriesOfField, categoryName } from '../data/categories';
-import { questionsOfSection } from '../data/questions';
+import { questionsBOfSection, questionsOfSection } from '../data/questions';
 import { Markdown } from '../lib/markdown';
 import { navigate, useRoute } from '../lib/router';
 import { countMatchingQuestions, searchSections } from '../lib/search';
@@ -156,6 +156,7 @@ function SectionView({ id }: { id: string }): JSX.Element {
   const prev = index > 0 ? SECTIONS[index - 1] : undefined;
   const next = index >= 0 && index < SECTIONS.length - 1 ? SECTIONS[index + 1] : undefined;
   const checks = section ? questionsOfSection(section.id) : [];
+  const checksB = section ? questionsBOfSection(section.id) : [];
 
   useEffect(() => {
     if (section) actions.setBookmark(section.id);
@@ -206,6 +207,16 @@ function SectionView({ id }: { id: string }): JSX.Element {
         <Markdown source={section.body} />
       </article>
 
+      {section.id !== 'i-4' && (
+        <p className="hint glossary-link">
+          知らない言葉が出てきたら{' '}
+          <button type="button" className="link-btn" onClick={() => navigate('textbook/i-4')}>
+            用語ミニ辞典
+          </button>
+          {' '}で引けます。
+        </p>
+      )}
+
       <div className="read-actions">
         <button
           type="button"
@@ -217,6 +228,11 @@ function SectionView({ id }: { id: string }): JSX.Element {
         {checks.length > 0 && (
           <button type="button" className="btn" onClick={() => navigate(`practice-a?section=${section.id}`)}>
             確認問題を解く（{checks.length} 問）
+          </button>
+        )}
+        {checksB.length > 0 && (
+          <button type="button" className="btn" onClick={() => navigate(`practice-b?section=${section.id}`)}>
+            科目B の問題を解く（{checksB.length} 問）
           </button>
         )}
       </div>

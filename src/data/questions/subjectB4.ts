@@ -5,6 +5,7 @@ export const QUESTIONS_B4: QuestionB[] = [
   {
     id: 'b-sec-11',
     kind: 'security',
+    sectionId: 't-sec-4',
     level: 2,
     title: 'テレワーク端末の管理',
     description:
@@ -40,6 +41,7 @@ export const QUESTIONS_B4: QuestionB[] = [
   {
     id: 'b-sec-12',
     kind: 'security',
+    sectionId: 't-sec-3',
     level: 2,
     title: 'クラウドストレージの共有設定ミス',
     description:
@@ -76,6 +78,7 @@ export const QUESTIONS_B4: QuestionB[] = [
   {
     id: 'b-sec-13',
     kind: 'security',
+    sectionId: 't-sec-3',
     level: 2,
     title: '退職予定者による情報持ち出し',
     description:
@@ -111,6 +114,7 @@ export const QUESTIONS_B4: QuestionB[] = [
   {
     id: 'b-sec-14',
     kind: 'security',
+    sectionId: 't-sec-2',
     level: 3,
     title: 'Webサービスのパスワード保管',
     description:
@@ -146,6 +150,7 @@ export const QUESTIONS_B4: QuestionB[] = [
   {
     id: 'b-sec-15',
     kind: 'security',
+    sectionId: 't-sec-1',
     level: 2,
     title: '委託先経由のサプライチェーン侵入',
     description:
@@ -182,6 +187,7 @@ export const QUESTIONS_B4: QuestionB[] = [
   {
     id: 'b-sec-16',
     kind: 'security',
+    sectionId: 't-sec-5',
     level: 3,
     title: 'ログ管理と監視体制',
     description:
@@ -220,6 +226,7 @@ export const QUESTIONS_B4: QuestionB[] = [
   {
     id: 'b-sec-17',
     kind: 'security',
+    sectionId: 't-sec-3',
     level: 3,
     title: '開発環境と本番環境の分離',
     description:
@@ -255,6 +262,7 @@ export const QUESTIONS_B4: QuestionB[] = [
   {
     id: 'b-sec-18',
     kind: 'security',
+    sectionId: 't-sec-3',
     level: 3,
     title: '脆弱性情報への対応',
     description:

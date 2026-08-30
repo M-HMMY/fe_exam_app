@@ -10,6 +10,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r05-01',
     kind: 'algorithm',
+    sectionId: 't-algo-4',
     level: 2,
     title: '素数を求める関数のループ範囲と判定条件',
     description:
@@ -51,6 +52,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r05-02',
     kind: 'algorithm',
+    sectionId: 't-algo-5',
     level: 1,
     title: '手続の相互呼出しによる出力順序',
     description:
@@ -87,6 +89,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r05-03',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 3,
     title: 'クイックソートの再帰呼出しトレース',
     description:
@@ -132,6 +135,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r05-04',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 2,
     title: 'ハッシュ表への格納（再ハッシュ法）',
     description:
@@ -179,6 +183,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r05-05',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 2,
     title: 'コサイン類似度を求める関数の穴埋め',
     description:
@@ -225,6 +230,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r05-06',
     kind: 'security',
+    sectionId: 't-sec-1',
     level: 2,
     title: '委託先の複合機スキャン機能に潜む情報セキュリティリスク',
     description:
@@ -249,6 +255,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r06-01',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 1,
     title: '三つの整数の最大値を求める条件式',
     description:
@@ -275,6 +282,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r06-02',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 2,
     title: '2進数文字列を整数値に変換する関数',
     description:
@@ -305,6 +313,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r06-03',
     kind: 'algorithm',
+    sectionId: 't-algo-4',
     level: 2,
     title: '辺の配列から隣接行列への変換',
     description:
@@ -339,6 +348,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r06-04',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 2,
     title: '配列併合処理のトレース（実行回数）',
     description:
@@ -385,6 +395,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r06-05',
     kind: 'algorithm',
+    sectionId: 't-algo-6',
     level: 3,
     title: '商品の関連度（アソシエーション分析）を求める手続',
     description:
@@ -444,6 +455,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r06-06',
     kind: 'security',
+    sectionId: 't-sec-4',
     level: 2,
     title: 'クラウドサービス直接接続に伴うリスク低減策',
     description:
@@ -469,6 +481,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r07-01',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 2,
     title: '区間内の4の倍数を数える二つの実装の等価性',
     description:
@@ -517,6 +530,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r07-02',
     kind: 'algorithm',
+    sectionId: 't-algo-6',
     level: 2,
     title: '硬貨の組合せ数を求めるループ条件',
     description:
@@ -543,6 +557,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r07-03',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 2,
     title: '配列で実装するスタックのpush・pop',
     description:
@@ -584,6 +599,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r07-04',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 2,
     title: '部分列探索における条件式の真の回数',
     description:
@@ -621,6 +637,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r07-05',
     kind: 'algorithm',
+    sectionId: 't-algo-6',
     level: 3,
     title: '分割表の理論度数を計算する関数',
     description:
@@ -651,6 +668,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r07-06',
     kind: 'security',
+    sectionId: 'm-sm-2',
     level: 3,
     title: 'バックアップ運用とRPO・RTOに基づく事業継続の内部監査対応',
     description:
@@ -681,6 +699,7 @@ export const pastBKoukai: QuestionB[] = [
   {
     id: 'b-ipa-r08-01',
     kind: 'algorithm',
+    sectionId: 't-algo-6',
     level: 1,
     title: '配列末尾の要素を先頭へ移動するループ範囲',
     description:
@@ -707,6 +726,7 @@ data[1] ← top`,
   {
     id: 'b-ipa-r08-02',
     kind: 'algorithm',
+    sectionId: 't-basic-1',
     level: 2,
     title: '8ビット値の2の補数を求める処理',
     description:
@@ -730,6 +750,7 @@ data[1] ← top`,
   {
     id: 'b-ipa-r08-03',
     kind: 'algorithm',
+    sectionId: 't-algo-5',
     level: 3,
     title: '再帰関数と等価な反復処理への置換え',
     description:
@@ -772,6 +793,7 @@ data[1] ← top`,
   {
     id: 'b-ipa-r08-04',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 2,
     title: '単方向リストを先頭からたどって配列に格納する',
     description:
@@ -808,6 +830,7 @@ data[1] ← top`,
   {
     id: 'b-ipa-r08-05',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 2,
     title: 'One-Hot表現への変換',
     description:
@@ -855,6 +878,7 @@ data[1] ← top`,
   {
     id: 'b-ipa-r08-06',
     kind: 'security',
+    sectionId: 't-sec-3',
     level: 3,
     title: 'クラウドサービスのログ管理ルール違反の特定',
     description:

@@ -1,9 +1,10 @@
 import { useState, type JSX } from 'react';
 import type { QuestionB } from '../types';
-import { QUESTIONS_B, questionBById } from '../data/questions';
+import { QUESTIONS_B, questionBById, questionsBOfSection } from '../data/questions';
+import { sectionById } from '../data/textbook';
 import { QuestionCardB } from '../components/QuestionCardB';
 import { actions, useStore } from '../store';
-import { navigate } from '../lib/router';
+import { navigate, useRoute } from '../lib/router';
 
 interface Session {
   q: QuestionB;
@@ -20,11 +21,18 @@ const KIND_LABEL: Record<QuestionB['kind'], string> = {
 
 export function PracticeB(): JSX.Element {
   const state = useStore();
+  const route = useRoute();
   const [session, setSession] = useState<Session | null>(null);
   const [filter, setFilter] = useState<'all' | QuestionB['kind']>('all');
 
+  // 教本の節から来た場合は、その節に対応する問題だけを一覧に出す
+  const sectionId = route.query.section;
+  const section = sectionId ? sectionById(sectionId) : undefined;
+
   const solvedIds = new Set(state.logs.map((l) => l.qid));
-  const list = QUESTIONS_B.filter((q) => filter === 'all' || q.kind === filter);
+  const list = section
+    ? questionsBOfSection(section.id)
+    : QUESTIONS_B.filter((q) => filter === 'all' || q.kind === filter);
 
   // ---- 一覧 ----
   if (!session) {
@@ -38,6 +46,18 @@ export function PracticeB(): JSX.Element {
           </p>
         </header>
 
+        {section && (
+          <section className="section">
+            <p className="hint">
+              教本「{section.title}」に対応する {list.length} 問です。
+            </p>
+            <button type="button" className="btn small ghost" onClick={() => navigate('practice-b')}>
+              すべての問題から選ぶ
+            </button>
+          </section>
+        )}
+
+        {!section && (
         <div className="chips">
           <button type="button" className={`chip ${filter === 'all' ? 'on' : ''}`} onClick={() => setFilter('all')}>
             すべて（{QUESTIONS_B.length}）
@@ -57,6 +77,7 @@ export function PracticeB(): JSX.Element {
             セキュリティ（{QUESTIONS_B.filter((q) => q.kind === 'security').length}）
           </button>
         </div>
+        )}
 
         <ul className="blist">
           {list.map((q) => {
@@ -90,7 +111,7 @@ export function PracticeB(): JSX.Element {
 
   // ---- 終了 ----
   if (subIndex >= q.subQuestions.length) {
-    const nextQuestion = QUESTIONS_B[QUESTIONS_B.findIndex((x) => x.id === q.id) + 1];
+    const nextQuestion = list[list.findIndex((x) => x.id === q.id) + 1];
     return (
       <div className="page">
         <header className="page-head">

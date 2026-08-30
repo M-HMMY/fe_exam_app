@@ -648,6 +648,75 @@ tr.low td {
   font-size: 14px;
 }
 
+.glossary-link {
+  margin-top: 24px;
+}
+
+/* ===== 直前チェックシート ===== */
+.sheet-block {
+  margin: 18px 0;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sheet-title {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.sheet-items {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sheet-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 6px 0;
+  padding: 8px 10px;
+  border-left: 3px solid var(--border);
+  border-radius: 0 6px 6px 0;
+  background: var(--surface-2);
+}
+
+.sheet-item.k-point {
+  border-left-color: var(--warn);
+}
+
+.sheet-item.k-pitfall {
+  border-left-color: var(--ng);
+  background: var(--ng-soft);
+}
+
+.sheet-item.k-recap {
+  border-left-color: var(--ok);
+}
+
+.sheet-kind {
+  flex: none;
+  min-width: 6.5em;
+  padding-top: 1px;
+  font-size: 11px;
+  color: var(--text-sub);
+}
+
+.sheet-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+}
+
+/* 一覧の中では段落の余白を詰め、表や図は出てこない前提で軽く扱う */
+.sheet-text .md p {
+  margin: 0;
+}
+
+.sheet-text .md {
+  display: inline;
+}
+
 /* ===== Markdown 本文 ===== */
 .md h2 {
   margin: 36px 0 12px;
@@ -727,6 +796,21 @@ tr.low td {
 
 .md blockquote p {
   margin: 4px 0;
+}
+
+.md-link {
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.md-link:hover {
+  text-decoration-thickness: 2px;
 }
 
 .md code {

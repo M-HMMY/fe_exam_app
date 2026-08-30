@@ -1,16 +1,20 @@
 import type { JSX, ReactNode } from 'react';
 import { Diagram } from '../components/Diagram';
 import { Widget } from '../components/Widget';
+import { navigate } from './router';
 
 /**
  * 教本本文用の軽量 Markdown レンダラ。
  * 依存を増やさずに済ませるため、必要な記法だけを実装している。
  *   見出し(#/##/###) / 箇条書き(- , 1.) / 表 / コードブロック(```) /
- *   引用(> ) / **強調** / `コード` / 水平線(---)
+ *   引用(> ) / **強調** / `コード` / [文字](リンク先) / 水平線(---)
+ *
+ * リンク先はアプリ内のルート（例: textbook/t-algo-2、drill、practice-b?section=…）だけを
+ * 受け付ける。外部 URL は扱わない（このアプリは通信をしない設計のため）。
  */
 
-/** インライン記法（**強調** と `コード`）を処理する */
-function inline(text: string, keyPrefix: string): ReactNode[] {
+/** リンクの中身に強調とコード表記だけを許す（入れ子のリンクは作らない） */
+function linkLabel(text: string, keyPrefix: string): ReactNode[] {
   const nodes: ReactNode[] = [];
   const re = /(\*\*[^*]+\*\*|`[^`]+`)/g;
   let last = 0;
@@ -19,7 +23,40 @@ function inline(text: string, keyPrefix: string): ReactNode[] {
   while ((m = re.exec(text)) !== null) {
     if (m.index > last) nodes.push(text.slice(last, m.index));
     const token = m[0];
-    if (token.startsWith('**')) {
+    if (token.startsWith('**')) nodes.push(<strong key={`${keyPrefix}-lb${i}`}>{token.slice(2, -2)}</strong>);
+    else nodes.push(<code key={`${keyPrefix}-lc${i}`}>{token.slice(1, -1)}</code>);
+    last = m.index + token.length;
+    i++;
+  }
+  if (last < text.length) nodes.push(text.slice(last));
+  return nodes;
+}
+
+/** インライン記法（**強調** / `コード` / [文字](リンク先)）を処理する */
+function inline(text: string, keyPrefix: string): ReactNode[] {
+  const nodes: ReactNode[] = [];
+  const re = /(\[[^\]]+\]\([^)\s]+\)|\*\*[^*]+\*\*|`[^`]+`)/g;
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let i = 0;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) nodes.push(text.slice(last, m.index));
+    const token = m[0];
+    if (token.startsWith('[')) {
+      const cut = token.indexOf('](');
+      const label = token.slice(1, cut);
+      const to = token.slice(cut + 2, -1);
+      nodes.push(
+        <button
+          key={`${keyPrefix}-l${i}`}
+          type="button"
+          className="md-link"
+          onClick={() => navigate(to)}
+        >
+          {linkLabel(label, `${keyPrefix}-l${i}`)}
+        </button>,
+      );
+    } else if (token.startsWith('**')) {
       nodes.push(<strong key={`${keyPrefix}-b${i}`}>{token.slice(2, -2)}</strong>);
     } else {
       nodes.push(<code key={`${keyPrefix}-c${i}`}>{token.slice(1, -1)}</code>);

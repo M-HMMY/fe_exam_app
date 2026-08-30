@@ -61,3 +61,6 @@ export const questionsOfCategory = (categoryId: string): QuestionA[] =>
 
 export const questionsOfSection = (sectionId: string): QuestionA[] =>
   QUESTIONS_A.filter((q) => q.sectionId === sectionId);
+
+export const questionsBOfSection = (sectionId: string): QuestionB[] =>
+  QUESTIONS_B.filter((q) => q.sectionId === sectionId);

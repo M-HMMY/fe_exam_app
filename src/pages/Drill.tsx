@@ -3,7 +3,7 @@ import { DRILLS, type Drill as DrillType, type DrillItem } from '../data/drills'
 import { ChoiceList, CHOICE_LABELS } from '../components/ChoiceList';
 import { categoryName } from '../data/categories';
 import { actions, useStore } from '../store';
-import { navigate } from '../lib/router';
+import { navigate, useRoute } from '../lib/router';
 import { choiceIndexOf, useKeys } from '../lib/useKeys';
 import { Markdown } from '../lib/markdown';
 
@@ -25,7 +25,13 @@ const drillQid = (id: string): string => `drill:${id}`;
 
 export function Drill(): JSX.Element {
   const state = useStore();
-  const [chosen, setChosen] = useState<Set<string>>(() => new Set(DRILLS.map((d) => d.id)));
+  const route = useRoute();
+  // 教本の節から ?type=xxx で来た場合は、その 1 種類だけを選んだ状態で始める
+  const [chosen, setChosen] = useState<Set<string>>(() => {
+    const wanted = route.query.type;
+    if (wanted && DRILLS.some((d) => d.id === wanted)) return new Set([wanted]);
+    return new Set(DRILLS.map((d) => d.id));
+  });
   const [session, setSession] = useState<Session | null>(null);
 
   /** ドリル種別ごとの成績（これまでの全期間） */

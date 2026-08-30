@@ -5,6 +5,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-algo-41',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 2,
     title: '選択ソートの改良（最小値と最大値の同時探索）',
     description:
@@ -45,6 +46,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-algo-42',
     kind: 'algorithm',
+    sectionId: 't-algo-6',
     level: 2,
     title: '配列の回転（k 個ぶん左にずらす）',
     description:
@@ -83,6 +85,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-algo-43',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 1,
     title: '数字文字列を整数に変換する',
     description:
@@ -114,6 +117,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-algo-44',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 1,
     title: '配列を条件で 2 つに分ける',
     description:
@@ -160,6 +164,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-algo-45',
     kind: 'algorithm',
+    sectionId: 't-algo-4',
     level: 2,
     title: '累積和による区間和の計算',
     description:
@@ -192,6 +197,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-algo-46',
     kind: 'algorithm',
+    sectionId: 't-algo-6',
     level: 3,
     title: '2 つの文字列が並べ替えで一致するか判定する',
     description:
@@ -241,6 +247,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-algo-47',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 2,
     title: '単方向リストへの末尾追加と要素数の数え上げ',
     description:
@@ -298,6 +305,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-algo-48',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 3,
     title: 'スタック 2 本でキューを実現する',
     description:
@@ -340,6 +348,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-algo-49',
     kind: 'algorithm',
+    sectionId: 't-algo-1',
     level: 3,
     title: 'ハッシュ表への格納と衝突時のチェイン法',
     description:
@@ -376,6 +385,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-algo-50',
     kind: 'algorithm',
+    sectionId: 't-algo-5',
     level: 2,
     title: '再帰によるハノイの塔',
     description:
@@ -414,6 +424,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-algo-51',
     kind: 'algorithm',
+    sectionId: 't-algo-2',
     level: 3,
     title: '挿入位置を 2 分探索で求めてから挿入する',
     description:
@@ -452,6 +463,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-algo-52',
     kind: 'algorithm',
+    sectionId: 't-algo-6',
     level: 2,
     title: '1 次元配列で表現した行列の転置',
     description:
@@ -495,6 +507,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-algo-53',
     kind: 'algorithm',
+    sectionId: 't-algo-3',
     level: 1,
     title: '各桁の和を求める',
     description:
@@ -529,6 +542,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-sec-21',
     kind: 'security',
+    sectionId: 's-biz-3',
     level: 2,
     title: '生成AIの業務利用と機密情報の入力',
     description:
@@ -564,6 +578,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-sec-22',
     kind: 'security',
+    sectionId: 't-sec-2',
     level: 2,
     title: '多要素認証の紛失・機種変更時の運用',
     description:
@@ -599,6 +614,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-sec-23',
     kind: 'security',
+    sectionId: 't-sec-5',
     level: 2,
     title: '公開Webサイトの改ざん検知と復旧',
     description:
@@ -634,6 +650,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-sec-24',
     kind: 'security',
+    sectionId: 't-sec-3',
     level: 2,
     title: '持ち出しPCの紛失と情報漏えい対策',
     description:
@@ -669,6 +686,7 @@ export const QUESTIONS_B5: QuestionB[] = [
   {
     id: 'b-sec-25',
     kind: 'security',
+    sectionId: 't-sec-5',
     level: 2,
     title: 'アクセスログからの不正アクセス兆候の検知',
     description:
