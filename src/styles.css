@@ -710,6 +710,77 @@ tr.low td {
   opacity: 0.75;
 }
 
+.selfcheck {
+  margin: 28px 0;
+  padding: 14px 16px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+}
+
+.selfcheck-head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.selfcheck-title {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.selfcheck-note {
+  margin: 6px 0 10px;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.selfcheck-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: sc;
+}
+
+.selfcheck-item {
+  margin: 6px 0;
+  border-radius: 6px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.selfcheck-q {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.selfcheck-mark {
+  flex: none;
+  width: 1em;
+  color: var(--accent);
+}
+
+.selfcheck-a {
+  margin: 0;
+  padding: 0 12px 12px 32px;
+  font-size: 14px;
+  color: var(--text-sub);
+}
+
 /* ===== 直前チェックシート ===== */
 .sheet-block {
   margin: 18px 0;

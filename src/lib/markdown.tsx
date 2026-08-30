@@ -1,6 +1,7 @@
 import type { JSX, ReactNode } from 'react';
 import { Diagram } from '../components/Diagram';
 import { Widget } from '../components/Widget';
+import { SelfCheck } from '../components/SelfCheck';
 import { navigate } from './router';
 
 /**
@@ -122,6 +123,10 @@ export function Markdown({ source }: { source: string }): JSX.Element {
       // ```diagram:flow → 図、```widget:radix → 対話ウィジェット
       if (lang.startsWith('diagram:')) {
         out.push(<Diagram key={k()} type={lang.slice('diagram:'.length)} source={buf.join('\n')} />);
+        continue;
+      }
+      if (lang === 'quiz') {
+        out.push(<SelfCheck key={k()} source={buf.join('\n')} />);
         continue;
       }
       if (lang.startsWith('widget:')) {
