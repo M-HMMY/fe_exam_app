@@ -11,6 +11,11 @@ export interface Category {
   name: string;
   /** 一行説明 */
   summary: string;
+  /**
+   * 章の扉に出す導入文（Markdown）。この章で何をやり、なぜ必要で、
+   * どれくらい力を入れるべきかを、節を読む前に伝える。
+   */
+  intro: string;
 }
 
 /** 教本の 1 セクション（＝ひとつの学習単位） */
@@ -118,6 +123,12 @@ export interface MockResult {
   byCategory: Record<string, { total: number; correct: number }>;
 }
 
+/**
+ * 節ごとの理解度。読了フラグだけでは「読んだが自信がない節」を拾えないため、
+ * 3 段階で記録して復習の優先順位に使う。
+ */
+export type Understanding = 1 | 2 | 3;
+
 /** localStorage に保存する状態のすべて */
 export interface AppState {
   version: number;
@@ -134,4 +145,9 @@ export interface AppState {
   examDate?: string;
   /** 表示テーマ。既定は 'auto'（OS 追従） */
   theme?: 'light' | 'dark' | 'auto';
+  /**
+   * セクション ID ごとの理解度（1=もう一度読みたい / 2=だいたい分かった / 3=だいじょうぶ）。
+   * 記録がない読了済みの節は「水準は未記録」として扱う。
+   */
+  understanding?: Record<string, Understanding>;
 }

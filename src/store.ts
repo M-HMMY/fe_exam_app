@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react';
-import type { AppState, AttemptLog, MockResult } from './types';
+import type { AppState, AttemptLog, MockResult, Understanding } from './types';
 import { emptyState, loadState, saveState } from './lib/storage';
 import { newCard, review, type Grade } from './lib/srs';
 
@@ -28,14 +28,31 @@ export const actions = {
   markRead(sectionId: string, read: boolean): void {
     const current = new Set(state.readSections);
     const readAt = { ...(state.readAt ?? {}) };
+    const understanding = { ...(state.understanding ?? {}) };
     if (read) {
       current.add(sectionId);
       readAt[sectionId] = Date.now();
     } else {
       current.delete(sectionId);
       delete readAt[sectionId];
+      // 読了を取り消したら理解度の記録も残さない
+      delete understanding[sectionId];
     }
-    set({ ...state, readSections: [...current], readAt });
+    set({ ...state, readSections: [...current], readAt, understanding });
+  },
+
+  /** 理解度を記録する。同時に読了にもする（読まずに評価はできないため） */
+  setUnderstanding(sectionId: string, level: Understanding): void {
+    const current = new Set(state.readSections);
+    current.add(sectionId);
+    const readAt = { ...(state.readAt ?? {}) };
+    if (readAt[sectionId] === undefined) readAt[sectionId] = Date.now();
+    set({
+      ...state,
+      readSections: [...current],
+      readAt,
+      understanding: { ...(state.understanding ?? {}), [sectionId]: level },
+    });
   },
 
   setBookmark(sectionId: string): void {

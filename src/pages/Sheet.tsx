@@ -16,9 +16,11 @@ export function Sheet(): JSX.Element {
   const [kinds, setKinds] = useState<Set<DigestKind>>(new Set(KINDS));
   const [field, setField] = useState<string>('all');
   const [readOnly, setReadOnly] = useState(false);
+  const [shakyOnly, setShakyOnly] = useState(false);
 
   const digests = useMemo(() => allDigests(), []);
   const readSet = useMemo(() => new Set(state.readSections), [state.readSections]);
+  const levels = state.understanding ?? {};
 
   const catField = useMemo(() => {
     const m = new Map<string, string>();
@@ -31,9 +33,10 @@ export function Sheet(): JSX.Element {
       digests
         .filter((d) => field === 'all' || catField.get(d.categoryId) === field)
         .filter((d) => !readOnly || readSet.has(d.sectionId))
+        .filter((d) => !shakyOnly || levels[d.sectionId] === 1)
         .map((d) => ({ ...d, items: d.items.filter((it) => kinds.has(it.kind)) }))
         .filter((d) => d.items.length > 0),
-    [digests, field, readOnly, readSet, kinds, catField],
+    [digests, field, readOnly, shakyOnly, readSet, levels, kinds, catField],
   );
 
   const total = shown.reduce((n, d) => n + d.items.length, 0);
@@ -90,6 +93,13 @@ export function Sheet(): JSX.Element {
           >
             読了した節だけ
           </button>
+          <button
+            type="button"
+            className={`chip ${shakyOnly ? 'on' : ''}`}
+            onClick={() => setShakyOnly(!shakyOnly)}
+          >
+            もう一度読みたい節だけ
+          </button>
         </div>
         <p className="hint">{total} 項目 / {shown.length} 節</p>
       </section>
@@ -98,7 +108,8 @@ export function Sheet(): JSX.Element {
         <section className="section">
           <p className="hint">
             条件に合う項目がありません。
-            {readOnly && '「読了した節だけ」を外すか、教本を読み進めてください。'}
+            {shakyOnly && '「もう一度読みたい」と記録した節がまだありません。'}
+            {readOnly && !shakyOnly && '「読了した節だけ」を外すか、教本を読み進めてください。'}
           </p>
         </section>
       )}

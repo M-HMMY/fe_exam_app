@@ -44,6 +44,8 @@ export function Home(): JSX.Element {
   const plan = upcoming(state.srs, 7);
   const bookmark = state.bookmark ? sectionById(state.bookmark) : undefined;
   const nextUnread = SECTIONS.find((s) => !state.readSections.includes(s.id));
+  // 「もう一度読みたい」と記録した節。演習より先に戻るべき場所
+  const shaky = SECTIONS.filter((s) => state.understanding?.[s.id] === 1);
   const subQuestionCount = QUESTIONS_B.reduce((n, q) => n + q.subQuestions.length, 0);
 
   // 試験日カウントダウンと学習ペース
@@ -218,6 +220,27 @@ export function Home(): JSX.Element {
           </button>
         </div>
       </section>
+
+      {shaky.length > 0 && (
+        <section className="section">
+          <h2>もう一度読みたい節</h2>
+          <p className="hint">
+            読んだあとに「まだ腹に落ちていない」と記録した節です。演習で点が伸びないときは、まずここに戻るのが近道です。
+          </p>
+          <ul className="weak-list">
+            {shaky.slice(0, 6).map((s) => (
+              <li key={s.id}>
+                <span className="weak-name">{s.title}</span>
+                <span className="weak-count">{categoryName(s.categoryId)}</span>
+                <button type="button" className="link-btn" onClick={() => navigate(`textbook/${s.id}`)}>
+                  読み直す
+                </button>
+              </li>
+            ))}
+          </ul>
+          {shaky.length > 6 && <p className="hint">ほか {shaky.length - 6} 節</p>}
+        </section>
+      )}
 
       {weak.length > 0 && (
         <section className="section">

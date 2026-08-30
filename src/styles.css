@@ -652,6 +652,64 @@ tr.low td {
   margin-top: 24px;
 }
 
+.chapter-intro {
+  margin: 6px 0 12px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--surface-2);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.chapter-intro .md p {
+  margin: 0;
+}
+
+.check.shaky {
+  color: var(--warn);
+  border-color: var(--warn);
+  font-weight: 700;
+}
+
+.understanding {
+  margin: 28px 0 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.understanding-q {
+  margin: 0 0 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.understanding-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.u-btn {
+  flex: 1 1 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.u-label {
+  font-weight: 600;
+}
+
+.u-note {
+  font-size: 11px;
+  opacity: 0.75;
+}
+
 /* ===== 直前チェックシート ===== */
 .sheet-block {
   margin: 18px 0;

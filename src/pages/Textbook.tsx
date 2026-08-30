@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type JSX } from 'react';
 import { useStore, actions } from '../store';
+import type { Understanding } from '../types';
 import { SECTIONS, sectionById, sectionsOfCategory, totalMinutes } from '../data/textbook';
 import { CATEGORIES, FIELDS, categoriesOfField, categoryName } from '../data/categories';
 import { questionsBOfSection, questionsOfSection } from '../data/questions';
@@ -58,11 +59,19 @@ function SearchResults({ query }: { query: string }): JSX.Element {
   );
 }
 
+/** 節を読んだあとに記録する手応え。ホームと直前チェックの絞り込みに使う */
+const UNDERSTANDING_LEVELS: { level: Understanding; label: string; note: string }[] = [
+  { level: 1, label: 'もう一度読みたい', note: 'まだ腹に落ちていない' },
+  { level: 2, label: 'だいたい分かった', note: '問題を解けば固まりそう' },
+  { level: 3, label: 'だいじょうぶ', note: '人に説明できる' },
+];
+
 /** 教本の目次 */
 function Toc(): JSX.Element {
   const state = useStore();
   const [query, setQuery] = useState('');
   const readSet = new Set(state.readSections);
+  const levels = state.understanding ?? {};
   const searching = query.trim().length > 0;
 
   return (
@@ -123,12 +132,18 @@ function Toc(): JSX.Element {
                   </span>
                 </div>
                 <p className="chapter-summary">{cat.summary}</p>
+                <div className="chapter-intro">
+                  <Markdown source={cat.intro} />
+                </div>
                 <ul className="toc">
                   {sections.map((s) => (
                     <li key={s.id}>
                       <button type="button" className="toc-item" onClick={() => navigate(`textbook/${s.id}`)}>
-                        <span className={`check ${readSet.has(s.id) ? 'done' : ''}`}>
-                          {readSet.has(s.id) ? '✓' : ''}
+                        <span
+                          className={`check ${readSet.has(s.id) ? 'done' : ''} ${levels[s.id] === 1 ? 'shaky' : ''}`}
+                          title={levels[s.id] === 1 ? 'もう一度読みたい' : undefined}
+                        >
+                          {levels[s.id] === 1 ? '△' : readSet.has(s.id) ? '✓' : ''}
                         </span>
                         <span className="toc-text">
                           <span className="toc-title">{s.title}</span>
@@ -185,6 +200,7 @@ function SectionView({ id }: { id: string }): JSX.Element {
   }
 
   const isRead = state.readSections.includes(section.id);
+  const level = state.understanding?.[section.id];
   const category = CATEGORIES.find((c) => c.id === section.categoryId);
 
   return (
@@ -217,14 +233,37 @@ function SectionView({ id }: { id: string }): JSX.Element {
         </p>
       )}
 
+      <div className="understanding">
+        <p className="understanding-q">読み終えたら、いまの手応えを選んでください</p>
+        <div className="understanding-btns">
+          {UNDERSTANDING_LEVELS.map((u) => (
+            <button
+              key={u.level}
+              type="button"
+              className={`btn u-btn ${level === u.level ? 'primary' : ''}`}
+              onClick={() => actions.setUnderstanding(section.id, u.level)}
+            >
+              <span className="u-label">{u.label}</span>
+              <span className="u-note">{u.note}</span>
+            </button>
+          ))}
+        </div>
+        <p className="hint">
+          「もう一度読みたい」を選んだ節は、ホームと直前チェックで優先的に表示されます。
+        </p>
+      </div>
+
       <div className="read-actions">
-        <button
-          type="button"
-          className={`btn ${isRead ? 'ghost' : 'primary'}`}
-          onClick={() => actions.markRead(section.id, !isRead)}
-        >
-          {isRead ? '読了を取り消す' : '読了にする'}
-        </button>
+        {isRead && (
+          <button type="button" className="btn ghost" onClick={() => actions.markRead(section.id, false)}>
+            読了を取り消す
+          </button>
+        )}
+        {!isRead && (
+          <button type="button" className="btn" onClick={() => actions.markRead(section.id, true)}>
+            手応えは選ばず読了にする
+          </button>
+        )}
         {checks.length > 0 && (
           <button type="button" className="btn" onClick={() => navigate(`practice-a?section=${section.id}`)}>
             確認問題を解く（{checks.length} 問）
