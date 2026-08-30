@@ -11,6 +11,10 @@ import { poolDbNw } from './pool-db-nw';
 import { poolSecDevUi } from './pool-sec-dev-ui';
 import { poolMgmt } from './pool-mgmt';
 import { poolStrategy } from './pool-strategy';
+import { pastA20232024 } from './past-a-2023-2024';
+import { pastASample1 } from './past-a-sample1';
+import { pastASample2 } from './past-a-sample2';
+import { pastA20252026 } from './past-a-2025-2026';
 import { QUESTIONS_B as baseB } from './subjectB';
 import { QUESTIONS_B2 } from './subjectB2';
 import { QUESTIONS_B3 } from './subjectB3';
@@ -30,6 +34,10 @@ export const QUESTIONS_A: QuestionA[] = [
   ...poolSecDevUi,
   ...poolMgmt,
   ...poolStrategy,
+  ...pastA20232024,
+  ...pastASample1,
+  ...pastASample2,
+  ...pastA20252026,
 ];
 
 export const QUESTIONS_B: QuestionB[] = [

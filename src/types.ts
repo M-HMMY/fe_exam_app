@@ -39,6 +39,12 @@ export interface QuestionA {
   explanation: string;
   /** 体感難易度 1（易）〜3（難） */
   level: 1 | 2 | 3;
+  /**
+   * 出典。IPA が公開している試験問題を収録した場合に設定する
+   * （例: '令和5年度 基本情報技術者試験 科目A 公開問題 問1'）。
+   * オリジナルの練習問題では未設定。
+   */
+  source?: string;
 }
 
 /** 科目B の設問（1 つの問題文に複数の設問がぶら下がることがある） */
@@ -64,6 +70,8 @@ export interface QuestionB {
   supplement?: string;
   subQuestions: SubQuestionB[];
   level: 1 | 2 | 3;
+  /** 出典。IPA 公開問題を収録した場合に設定する */
+  source?: string;
 }
 
 /** 解答履歴の 1 レコード */

@@ -53,6 +53,7 @@ export function QuestionCardB({
             {q.kind === 'algorithm' ? 'アルゴリズムとプログラミング' : '情報セキュリティ'}
           </span>
           <span className="tag tag-level">{'★'.repeat(q.level)}</span>
+          {q.source && <span className="tag tag-src">公式過去問</span>}
         </div>
         {counter && <span className="counter">{counter}</span>}
       </header>
@@ -95,6 +96,8 @@ export function QuestionCardB({
           </div>
         </div>
       )}
+
+      {q.source && <p className="qsource">出典：{q.source}（独立行政法人情報処理推進機構）</p>}
 
       {footer && <div className="qcard-footer">{footer}</div>}
     </article>
