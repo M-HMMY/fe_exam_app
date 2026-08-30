@@ -6,7 +6,7 @@ export default defineConfig({
   base: './',
   build: {
     // バンドルの大半は教本本文と問題データ（意図した内容）なので、警告のしきい値を上げておく
-    chunkSizeWarningLimit: 800,
+    chunkSizeWarningLimit: 1400,
   },
   server: {
     host: true,
