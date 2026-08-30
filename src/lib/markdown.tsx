@@ -31,6 +31,20 @@ function inline(text: string, keyPrefix: string): ReactNode[] {
   return nodes;
 }
 
+/** 教本で決まった役割を持つ見出し。読み手への合図として見た目を変える */
+const SPECIAL_HEADINGS: Record<string, string | undefined> = {
+  'ざっくり言うと': 'h-primer',
+  'この節のまとめ': 'h-recap',
+};
+
+/** 引用ブロックは用途によって色を変える（試験のポイント／よくある勘違い／要点） */
+function calloutClass(firstLine: string): string | undefined {
+  if (firstLine.startsWith('**よくある勘違い**')) return 'qt-pitfall';
+  if (firstLine.startsWith('**試験のポイント**')) return 'qt-exam';
+  if (firstLine.startsWith('**ここだけ覚える**')) return 'qt-key';
+  return undefined;
+}
+
 function isTableSeparator(line: string): boolean {
   return /^\|?[\s:-]*-[\s|:-]*$/.test(line) && line.includes('-');
 }
@@ -97,7 +111,7 @@ export function Markdown({ source }: { source: string }): JSX.Element {
     if (h) {
       const level = h[1].length;
       const content = inline(h[2], k());
-      if (level === 1) out.push(<h2 key={k()}>{content}</h2>);
+      if (level === 1) out.push(<h2 key={k()} className={SPECIAL_HEADINGS[h[2].trim()]}>{content}</h2>);
       else if (level === 2) out.push(<h3 key={k()}>{content}</h3>);
       else out.push(<h4 key={k()}>{content}</h4>);
       i++;
@@ -146,7 +160,7 @@ export function Markdown({ source }: { source: string }): JSX.Element {
         i++;
       }
       out.push(
-        <blockquote key={k()}>
+        <blockquote key={k()} className={calloutClass(buf[0] ?? '')}>
           {buf.map((b, bi) => (
             <p key={bi}>{inline(b, `${k()}-q${bi}`)}</p>
           ))}

@@ -661,6 +661,36 @@ tr.low td {
   font-size: 17px;
 }
 
+/* 「ざっくり言うと」＝ 節のはじめに置く、日常の言葉での導入 */
+.md h2.h-primer {
+  margin-top: 8px;
+  padding: 6px 12px;
+  color: var(--accent);
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+}
+
+/* 「この節のまとめ」＝ 節の終わりに置く、日常の言葉での振り返り */
+.md h2.h-recap {
+  padding: 6px 12px;
+  color: var(--ok);
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--ok-soft);
+}
+
+/* 引用ブロックの用途別の色分け */
+.md blockquote.qt-pitfall {
+  border-left-color: var(--ng);
+  background: var(--ng-soft);
+}
+
+.md blockquote.qt-key {
+  border-left-color: var(--ok);
+  background: var(--ok-soft);
+}
+
 .md h4 {
   margin: 20px 0 8px;
   font-size: 15px;
