@@ -20,6 +20,8 @@ import { QUESTIONS_B2 } from './subjectB2';
 import { QUESTIONS_B3 } from './subjectB3';
 import { QUESTIONS_B4 } from './subjectB4';
 import { QUESTIONS_B5 } from './subjectB5';
+import { pastBSample } from './past-b-sample';
+import { pastBKoukai } from './past-b-koukai';
 
 export const QUESTIONS_A: QuestionA[] = [
   ...aTech1,
@@ -46,6 +48,8 @@ export const QUESTIONS_B: QuestionB[] = [
   ...QUESTIONS_B3,
   ...QUESTIONS_B4,
   ...QUESTIONS_B5,
+  ...pastBSample,
+  ...pastBKoukai,
 ];
 
 export const questionBById = (id: string): QuestionB | undefined => QUESTIONS_B.find((q) => q.id === id);
