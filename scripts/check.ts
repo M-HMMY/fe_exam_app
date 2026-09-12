@@ -169,7 +169,10 @@ for (const q of QUESTIONS_B) {
       for (let i = 0; i < t.length - 1; i += 1) set.add(t.slice(i, i + 2));
       return set;
     };
-    const rows = QUESTIONS_A.map((q) => ({ q, g: grams(q) }));
+    /** 問題文と選択肢に出てくる数を、順序どおりに並べた文字列 */
+    const numbers = (q: (typeof QUESTIONS_A)[number]): string =>
+      (q.question + q.choices.join(' ')).match(/[0-9][0-9,.]*/g)?.join('/') ?? '';
+    const rows = QUESTIONS_A.map((q) => ({ q, g: grams(q), nums: numbers(q) }));
     const found: string[] = [];
     for (let i = 0; i < rows.length; i += 1) {
       for (let j = i + 1; j < rows.length; j += 1) {
@@ -185,7 +188,11 @@ for (const q of QUESTIONS_B) {
         // 暗号化と署名）なので正常。節をまたいで似ているものが、気づかずに書いた重複。
         const sameSection =
           rows[i].q.sectionId !== undefined && rows[i].q.sectionId === rows[j].q.sectionId;
-        if (sim >= 0.6 && !sameSection) {
+        // 同じ公式を、理論の節と演習の節で**数値だけ変えて**出すのは意図した繰返し
+        // なので重複ではない（稼働率・損益分岐点・伝送時間・待ち行列など）。
+        // 文面が似ていても、出てくる数が違えば別の問題として扱う。
+        const sameNumbers = rows[i].nums === rows[j].nums;
+        if (sim >= 0.6 && !sameSection && sameNumbers) {
           found.push(
             `${rows[i].q.id} と ${rows[j].q.id} が別の節でほぼ同じ内容（類似度 ${sim.toFixed(2)}）`,
           );
@@ -217,7 +224,10 @@ for (const q of QUESTIONS_B) {
     // 短い選択肢どうしでは比が暴れる（「13 字 / 5 字」で 2.6 倍）ので、
     // 正解がある程度の長さを持つ場合だけ見る。
     const other = Math.max(...lens.filter((_, i) => i !== q.answer));
-    if (lens[q.answer] >= 24 && lens[q.answer] >= other * 1.5 && lens[q.answer] - other >= 8) {
+    // 閾値の根拠：1.5 倍では緩く、レビューで指摘されたものは 1.35 倍前後に
+    // 集中していた。24 字の下限は、短い選択肢どうしで比が暴れるのを防ぐため
+    // （「13 字 / 5 字」で 2.6 倍になってしまう）。5 本の姉妹アプリで同じ値。
+    if (lens[q.answer] >= 24 && lens[q.answer] >= other * 1.3 && lens[q.answer] - other >= 6) {
       tooLong.push({
         msg: `科目A ${q.id}: 正解 ${lens[q.answer]} 字 / 最長の誤答 ${other} 字`,
         gap: lens[q.answer] / other,

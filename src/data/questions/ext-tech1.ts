@@ -36,11 +36,17 @@ export const extTech1: QuestionA[] = [
     categoryId: 't-basic',
     sectionId: 't-basic-4',
     level: 2,
-    question: '論理式 NOT(A OR B) と等価な式はどれか。',
-    choices: ['(NOT A) OR (NOT B)', '(NOT A) AND (NOT B)', 'A AND B', 'A XOR B'],
-    answer: 1,
+    question:
+      'A = 1、B = 0 のとき、NOT(A OR B) の値と (NOT A) AND (NOT B) の値の組合せはどれか。',
+    choices: [
+      'NOT(A OR B) = 1、(NOT A) AND (NOT B) = 1',
+      'NOT(A OR B) = 1、(NOT A) AND (NOT B) = 0',
+      'NOT(A OR B) = 0、(NOT A) AND (NOT B) = 0',
+      'NOT(A OR B) = 0、(NOT A) AND (NOT B) = 1',
+    ],
+    answer: 2,
     explanation:
-      'ド・モルガンの法則により、否定を分配すると OR は AND に入れ替わるので (NOT A) AND (NOT B) となる。アは NOT(A AND B) と等価な式であり別物。真理値表を 4 行書いて総当たりすれば確実に確認できる。',
+      'A = 1、B = 0 なので A OR B = 1、したがって NOT(A OR B) = 0 である。一方 NOT A = 0、NOT B = 1 なので (NOT A) AND (NOT B) = 0 となり、どちらも 0 で一致する。ド・モルガンの法則 NOT(A OR B) = (NOT A) AND (NOT B) はすべての入力の組合せで成り立つので、値が食い違う組合せはそもそも存在しない。真理値表を 4 行書けば総当たりで確かめられる。',
   },
   {
     id: 'a-ext-basic-04',
@@ -397,8 +403,8 @@ export const extTech1: QuestionA[] = [
     choices: [
       'ビット数が増えても加算に要する時間は変わらない',
       '減算専用の回路であり、加算には使用できない',
-      '桁上げを使わないため、各桁を完全に並列に計算できる',
-      '桁上げが下位から順に伝わるため、ビット数にほぼ比例して遅延が増える',
+      '桁上げを使わないため、各桁を完全に並列で計算できる',
+      '桁上げが下位から順に伝わるため、ビット数に比例して遅延が増える',
     ],
     answer: 3,
     explanation:
@@ -412,7 +418,7 @@ export const extTech1: QuestionA[] = [
     question: 'カルノー図を用いて論理式を簡単化するときの規則として、適切なものはどれか。',
     choices: [
       'グループは小さいほど簡単な論理式になる',
-      'ひとつの 1 は必ず 1 つのグループにしか属してはならない',
+      'ひとつの 1 は、必ず 1 つのグループにしか属してはならない',
       'まとめる 1 の個数は 2 の累乗（1, 2, 4, 8 …）でなければならない',
       '図の左右の端どうしは隣接しているとみなしてはならない',
     ],
