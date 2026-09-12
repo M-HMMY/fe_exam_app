@@ -206,48 +206,74 @@ for (const q of QUESTIONS_B) {
   const pos = [0, 0, 0, 0];
   let absoluteInCorrect = 0;
   let absoluteInWrong = 0;
-  const absolute = /必ず|すべて|常に|まったく|一切|絶対|例外なく|いかなる場合|どのような場合|一律/;
+  // 「すべて」は数え方が難しい。「すべての入力に対して」のようなただの記述まで
+  // 拾ってしまうので、断定を強める語だけを見る。
+  // 「常に」は部分一致だと「非常に」「通常に」まで拾うので、直前の字で除く。
+  const absolute = /必ず|(?<![非通日])常に|まったく|全く|一切|絶対|例外なく|いかなる場合|どのような場合|どんな場合|一律|あらゆる/;
   const tooLong: { msg: string; gap: number }[] = [];
   const skewed: string[] = [];
+  const lookup: string[] = [];
+
+  /** 1 問ぶんの選択肢を見て、解かずに当てられる形になっていないか調べる */
+  const inspectChoices = (at: string, choices: string[], answer: number): void => {
+    // 空白は見た目の長さに効かないので、除いてから数える。
+    const lens = choices.map((c) => c.replace(/\s/g, '').length);
+    const other = Math.max(...lens.filter((_, i) => i !== answer));
+    const mine = lens[answer];
+
+    // 正解だけが長いと、読まずに「長いものを選ぶ」で当てられてしまう。
+    //
+    // **比で測ってはいけない。** 以前は「1.3 倍かつ 6 字差」で見ていたが、
+    // 長い選択肢どうしだと 40 字 / 34 字が 1.18 倍にしかならず素通りする。
+    // そうして漏れたものが積み上がり、このアプリでは自作問題のうち 199 問で
+    // 正解が最長になっていた（長さの分布から計算した期待値の約 3 倍）。
+    // 受験者がやるのは比の計算ではなく見比べなので、**字数の差**で見る。
+    if (mine - other >= 5) {
+      tooLong.push({ msg: `${at}: 正解 ${mine} 字 / 最長の誤答 ${other} 字`, gap: mine - other });
+    }
+
+    // 言い切りが誤答にだけ出ていると、
+    // 内容を知らなくても「言い切っているものを外す」だけで当てられる。
+    // **「3 つすべて」では緩すぎた。** 2 つ消去できれば残りは二択になり、
+    // それだけで正答率が 25 % から 50 % に上がる。2 つ以上で数える。
+    const wrong = choices.filter((_, i) => i !== answer).filter((c) => absolute.test(c)).length;
+    if (wrong >= 2 && !absolute.test(choices[answer])) {
+      skewed.push(`${at}: 誤答 ${wrong} つに言い切りがあり、正解にはない`);
+    }
+  };
 
   for (const q of OWN_A) {
     pos[q.answer] += 1;
-    const lens = q.choices.map((c) => c.length);
     q.choices.forEach((c, i) => {
       if (!absolute.test(c)) return;
       if (i === q.answer) absoluteInCorrect += 1;
       else absoluteInWrong += 1;
     });
+    inspectChoices(`科目A ${q.id}`, q.choices, q.answer);
 
-    // 正解だけが長いと、読まずに「長いものを選ぶ」で当てられてしまう。
-    // ただし 1〜2 文字の差まで数えると実態より大きく出るので、差の大きさで見る。
-    // 短い選択肢どうしでは比が暴れる（「13 字 / 5 字」で 2.6 倍）ので、
-    // 正解がある程度の長さを持つ場合だけ見る。
-    const other = Math.max(...lens.filter((_, i) => i !== q.answer));
-    // 閾値の根拠：1.5 倍では緩く、レビューで指摘されたものは 1.35 倍前後に
-    // 集中していた。24 字の下限は、短い選択肢どうしで比が暴れるのを防ぐため
-    // （「13 字 / 5 字」で 2.6 倍になってしまう）。5 本の姉妹アプリで同じ値。
-    if (lens[q.answer] >= 24 && lens[q.answer] >= other * 1.3 && lens[q.answer] - other >= 6) {
-      tooLong.push({
-        msg: `科目A ${q.id}: 正解 ${lens[q.answer]} 字 / 最長の誤答 ${other} 字`,
-        gap: lens[q.answer] / other,
-      });
+    // 「本文で挙げられているものはどれか」は、知識ではなく直前の記載を覚えて
+    // いるかを問う形になっていて、教本を閉じた受験者には答えようがない。
+    // 「本文」だけで見ると、文字列照合の「本文（探索される側の文字列）」まで
+    // 拾ってしまう。記載を指す動詞と組になっているときだけ数える。
+    if (/(本文|教本|この節)(で|に)(挙げ|述べ|示さ|説明さ|書か)/.test(q.question)) {
+      lookup.push(`科目A ${q.id}: 設問が教本の記載そのものを指している`);
     }
+  }
 
-    // 誤答 3 つすべてに言い切りがあり、正解にだけ無いと、
-    // 内容を知らなくても「言い切っているものを外す」だけで当てられる。
-    // 全体の集計（下の absoluteInWrong）は 1 問ごとの偏りを拾えない。
-    if (
-      q.choices.every((c, i) => i === q.answer || absolute.test(c)) &&
-      !absolute.test(q.choices[q.answer])
-    ) {
-      skewed.push(`科目A ${q.id}: 誤答 3 つすべてに言い切りがあり、正解にはない`);
-    }
+  // **科目B の設問も同じ形で見る。** これまで科目A しか見ていなかったが、
+  // 科目B の設問にも「正解だけが長い」ものが実際にあった。
+  // 出典のある問題は原文どおりなので、ここでも除く。
+  for (const q of QUESTIONS_B) {
+    if (q.source !== undefined) continue;
+    q.subQuestions.forEach((s, i) => {
+      inspectChoices(`科目B ${q.id} 設問${i + 1}`, s.choices, s.answer);
+    });
   }
 
   tooLong.sort((a, b) => b.gap - a.gap);
   warnGroup('正解だけが突出して長い。誤答も同じ密度で書くこと', tooLong.map((t) => t.msg));
   warnGroup('言い切りを外すだけで選べてしまう。誤答側からも言い切りを減らすこと', skewed);
+  warnGroup('教材内の記載を探させる設問になっている。知識を問う形にすること', lookup);
 
   const n = OWN_A.length;
   if (n >= 40) {
