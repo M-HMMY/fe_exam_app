@@ -9,12 +9,14 @@
 ショートカットの実体は [scripts/launch.ps1](scripts/launch.ps1) です。作り直したい場合は次を実行します。
 
 ```powershell
+# ★ リポジトリの直下で実行してください。ここから絶対パスを組み立てます。
+$root = (Get-Location).Path
 $ws = New-Object -ComObject WScript.Shell
 $lnk = $ws.CreateShortcut((Join-Path ([Environment]::GetFolderPath('Desktop')) 'FE 学習アプリ.lnk'))
 $lnk.TargetPath = "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe"
-$lnk.Arguments = '-ExecutionPolicy Bypass -NoProfile -File "C:\Dev\fe_exam_app\scripts\launch.ps1"'
-$lnk.WorkingDirectory = 'C:\Dev\fe_exam_app'
-$lnk.IconLocation = 'C:\Dev\fe_exam_app\scripts\app.ico,0'
+$lnk.Arguments = "-ExecutionPolicy Bypass -NoProfile -File `"$root\scripts\launch.ps1`""
+$lnk.WorkingDirectory = $root
+$lnk.IconLocation = "$root\scripts\app.ico,0"
 $lnk.Save()
 ```
 
